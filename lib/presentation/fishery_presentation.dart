@@ -43,6 +43,9 @@ class FisheryPresentation
   Stream<FisheryEvent> get stream => streamer.stream;
 
   double get bioMassRatio => fishery.bioMassRatio;
+  double get bioMass => fishery.bioMass;
+  double get maxCapacity => fishery.maxCapacity;
+  String get name => fishery.name;
 
 
 }

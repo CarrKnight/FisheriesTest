@@ -13,4 +13,5 @@ import 'dart:html';
 
 part 'fishery_view.dart';
 part 'simulation_view.dart';
+part 'map.dart';
 

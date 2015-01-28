@@ -13,7 +13,7 @@ class SimulationView
 
   final SimulationPresentation presentation;
 
-  GMap map;
+  MouseTrackingMap map;
 
   /**
 
@@ -43,7 +43,7 @@ class SimulationView
       ..center = new LatLng(37.649350, 12.582516)
       ..mapTypeId = MapTypeId.SATELLITE
     ;
-    final map = new GMap(querySelector(selector), mapOptions);
+    final map = new MouseTrackingMap(querySelector(selector), mapOptions);
 
 
   //fishery views
@@ -54,7 +54,7 @@ class SimulationView
       print(defaultColors[i]);
       i++;
       //add the view to the map as well
-      view.polygon.map = map;
+      view.addToMap(map);
     }
 
 
