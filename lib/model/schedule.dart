@@ -101,13 +101,15 @@ class Phase {
 
   const Phase._(this.order);
 
-  static const MOVEMENT = const Phase._(0);
+  static const DAWN = const Phase._(0);
   static const FISHING = const Phase._(1);
-  static const REPLENISHING = const Phase._(2);
-  static const GUI = const Phase._(3);
+  static const GOSSIPING = const Phase._(3);
+  static const REPLENISHING = const Phase._(4);
+  static const PRESENTATION = const Phase._(5); //non-model events that need to happen before gui is alerted
+  static const GUI = const Phase._(6);
 
 
-  static final List<Phase> PHASE_LIST = [MOVEMENT,FISHING,REPLENISHING, GUI];
+  static final List<Phase> PHASE_LIST = [DAWN,FISHING,GOSSIPING,REPLENISHING,PRESENTATION, GUI];
 
 
 }

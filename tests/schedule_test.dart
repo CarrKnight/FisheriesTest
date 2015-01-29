@@ -16,7 +16,7 @@ main(){
 
     Schedule s = new Schedule();
     Queue toFill = new Queue();
-    s.schedule(Phase.MOVEMENT,(s)=>toFill.addLast(10));
+    s.schedule(Phase.DAWN,(s)=>toFill.addLast(10));
     s.schedule(Phase.GUI,(s)=>toFill.addLast(30));
     s.schedule(Phase.REPLENISHING,(s)=>toFill.addLast(15));
     s.schedule(Phase.REPLENISHING,(s)=>toFill.addLast(20));
@@ -36,7 +36,7 @@ main(){
       toFill.addLast(i);
       i+=10;
     };
-    s.schedule(Phase.MOVEMENT,(schedule) {
+    s.schedule(Phase.DAWN,(schedule) {
       stepper(schedule);
       s.scheduleTomorrow(stepper);
     });

@@ -17,3 +17,4 @@ import 'dart:collection';
 part 'fishery.dart';
 part 'schedule.dart';
 part 'simulation.dart';
+part 'fisherman.dart';
