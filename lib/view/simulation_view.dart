@@ -40,7 +40,7 @@ class SimulationView
     visualRefresh = true;
     final mapOptions = new MapOptions()
       ..zoom = 8
-      ..center = new LatLng(37.649350, 12.582516)
+      ..center = new LatLng(36.649350, 12.582516)
       ..mapTypeId = MapTypeId.SATELLITE
     ;
     final map = new MouseTrackingMap(querySelector(selector), mapOptions);

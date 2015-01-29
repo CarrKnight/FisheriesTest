@@ -23,7 +23,7 @@ void main()
   SimulationView view = new SimulationView.original(new DateTime.now().millisecondsSinceEpoch,
   "#map_canvas");
 
-  new Timer.periodic(new Duration(milliseconds:10),(t){
+  new Timer.periodic(new Duration(milliseconds:30),(t){
 
     view.step();
 
