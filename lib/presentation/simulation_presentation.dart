@@ -52,6 +52,32 @@ class SimulationPresentation
   SimulationPresentation.original(int seed,[int fishermen=100]):
   this._internal(new Simulation.original(seed,fishermen));
 
+
+  /**
+   * Fishermen go to the richest
+   */
+  SimulationPresentation.chooseRichest(int seed,[int fishermen=25]):
+  this._internal(new Simulation.chooseRichest(seed,fishermen));
+
+  /**
+   *  Oil price policy
+   */
+  SimulationPresentation.gasPolicy(int seed,
+                                   {int fishermen:25, double oilCost:2.0}):
+  this._internal(new Simulation.gasPolicy(seed,fishermen:fishermen,oilCosts:oilCost));
+
+  /**
+   * one fishery, untouched
+   */
+  SimulationPresentation.oneLonelyFishery(int seed):
+  this._internal(new Simulation.oneLonelyFishery(seed));
+
+  /**
+   * one fishery, overfished
+   */
+  SimulationPresentation.overfished(int seed):
+  this._internal(new Simulation.overfishing(seed));
+
   /**
    * stream bio masses, if listened to
    */

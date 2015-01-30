@@ -51,9 +51,12 @@ class Fisherman
     //go through all fisheries, choose the one that is most profitable
     location=null;
     double bestPi=0.0;
-    distances.forEach((fishery,distance){
+    List<Fishery> choices = new List.from(distances.keys);
+    choices.shuffle(random);
+    choices.forEach((fishery){
       double expectedPi = _expectedProfits(
-          costs.bioMassPrice,expectedBio[fishery],costs.oilPricePerKm,distance,costs.tariffs[fishery]);
+          costs.bioMassPrice,expectedBio[fishery],costs.oilPricePerKm,
+          distances[fishery],costs.tariffs[fishery]);
       if(expectedPi>bestPi || random.nextDouble() < errorProbability)
       {
         bestPi = expectedPi;
@@ -135,6 +138,7 @@ class GlobalCosts
 
   GlobalCosts(
       this.bioMassPrice, this.oilPricePerKm, this.tariffs);
+
 
 
 }

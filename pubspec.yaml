@@ -1,9 +1,9 @@
 name: 'mapspike'
 version: 0.0.1
 description: >
-  An absolute bare-bones web app.
-#author: <your name> <email@example.com>
-#homepage: https://www.example.com
+  A pure dart proof of concept agent-based model.
+author: Ernesto Carrella <ernesto.carrella@gmail.com>
+homepage: carrknight.github.io
 environment:
   sdk: '>=1.0.0 <2.0.0'
 dependencies:
