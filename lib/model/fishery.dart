@@ -50,11 +50,9 @@ class Fishery
     int dimensions = path.length;
     double alpha = random.nextDouble();
     double x = path[random.nextInt(dimensions)].x * alpha + path[random.nextInt(dimensions)].x *(1-alpha) ;
-    x/=2;
 
     alpha = random.nextDouble();
     double y = path[random.nextInt(dimensions)].y* alpha + path[random.nextInt(dimensions)].y *(1-alpha) ;
-    y/=2;
 
     return new Point(x,y);
   }
@@ -86,6 +84,9 @@ class Fishery
     double adjustedGrowthRate = 1.0 + growthRate *(1.0-bioMassRatio);
     bioMass = min(maxCapacity,adjustedGrowthRate*bioMass);
 
+    if(bioMass<.005)
+      bioMass=0.0;
+
     netBiomassChange += bioMass - oldBioMass;
   }
 
@@ -104,7 +105,6 @@ class Fishery
 
 
 
-
-
-
 }
+
+

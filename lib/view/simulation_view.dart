@@ -64,7 +64,7 @@ class SimulationView
     final map = new MouseTrackingMap(querySelector(selector), mapOptions);
 
 
-  //fishery views
+    //fishery views
     int i=0;
     for(FisheryPresentation fishery in presentation.fisheries.values)
     {
@@ -74,6 +74,9 @@ class SimulationView
       //add the view to the map as well
       view.addToMap(map);
     }
+    //fishermen markers
+    if(presentation.fishermen != null)
+      new FishermenView(presentation.fishermen,map);
 
 
   }

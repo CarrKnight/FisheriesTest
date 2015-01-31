@@ -20,6 +20,7 @@ class SimulationPresentation
 
   final StreamController<SimulationEvent> streamer = new StreamController();
 
+  FishermenPresentation fishermen;
 
   SimulationPresentation._internal(this.simulation) {
 
@@ -36,6 +37,17 @@ class SimulationPresentation
       simulation.schedule.scheduleRepeating(Phase.GUI,(s)=>presentation.endOfDay());
 
     }
+
+    if(simulation.fishermen.isNotEmpty)
+    {
+      print("presentation built!");
+      fishermen = new FishermenPresentation(
+          simulation.fishermen,
+          simulation.random);
+
+      simulation.schedule.scheduleRepeating(Phase.GUI, (s) => fishermen.present());
+    }
+
 
     //now schedule the general stream
     simulation.schedule.scheduleRepeating(Phase.GUI,endOfDay);

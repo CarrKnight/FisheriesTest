@@ -10,12 +10,16 @@ part of model;
 class Fisherman
 {
 
+  /**
+   * just a marker for fishermen to say they are in port
+   */
+  static final  Fishery AT_PORT = new Fishery(null);
 
 
   /**
    * place fishing in this turn. If null the fisherman is at port
    */
-  Fishery location = null;
+  Fishery location = AT_PORT;
 
   /**
    * fisherman expected bio-masses for each possible fishery
@@ -32,6 +36,8 @@ class Fisherman
    */
   final double ability;
 
+  double dailyCatch =0.0;
+
   Fisherman(this.port, this.ability, Random random, double minExpectedBio, double maxExpectedBio)
   {
     //populate at random the expected bios
@@ -47,9 +53,10 @@ class Fisherman
    */
   void chooseFishery(GlobalCosts costs, Random random, double errorProbability)
   {
+    dailyCatch =0.0;
 
     //go through all fisheries, choose the one that is most profitable
-    location=null;
+    location=AT_PORT;
     double bestPi=0.0;
     List<Fishery> choices = new List.from(distances.keys);
     choices.shuffle(random);
@@ -66,11 +73,12 @@ class Fisherman
     });
 
     //if you have chosen one, fish from it
-    if(location != null) {
+    if(location != AT_PORT) {
       double bio = location.fishHere(ability);
       //update expected bio
       expectedBio[location] = bio;
-
+      //strictly speaking the fishing doesn't occur till later but there is no error now so we can just count it
+      dailyCatch = bio*ability;
     }
 
     //done!
@@ -108,7 +116,9 @@ class Port
   location = new Point(x,y);
 
 
-  static const double JITTER_VARIANCE = .001;
+  static const double DEFAULT_JITTER_VARIANCE = .01;
+
+  double jitterVariance = DEFAULT_JITTER_VARIANCE;
 
 
   //todo move this in presentation
@@ -116,8 +126,8 @@ class Port
    * just a helper to get random location around the  port
    */
   Point jitterLocation(Random random)=>new Point(
-      location.x+random.nextDouble()*JITTER_VARIANCE,
-      location.y+random.nextDouble()*JITTER_VARIANCE);
+      location.x+random.nextDouble()*jitterVariance,
+      location.y+random.nextDouble()*jitterVariance);
 
 
 }

@@ -204,8 +204,8 @@ class Simulation
                                        new Point(37.718324, 11.880110),
                                        new Point( 37.570438, 11.665876),
                                        new Point(37.282526, 12.055891)]);
-    fishery1.bioMass=60.0;
-    fishery1.maxCapacity=100.0;
+    fishery1.bioMass=800.0;
+    fishery1.maxCapacity=4000.0;
     fishery1.name = "Marsala";
 
     Fishery fishery2 = new Fishery([ //center (36.803354,12.35252175)
@@ -213,8 +213,8 @@ class Simulation
                                        new Point(36.874957, 12.127302),
                                        new Point( 36.557917, 12.341535),
                                        new Point(36.791421, 12.522810)]);
-    fishery2.bioMass=80.0;
-    fishery2.maxCapacity=80.0;
+    fishery2.bioMass=800.0;
+    fishery2.maxCapacity=800.0;
     fishery2.name = "Pantelleria";
 
 
@@ -224,8 +224,8 @@ class Simulation
                                        new Point(36.681366, 13.830183),
                                        new Point( 36.456365, 13.374250),
                                        new Point(36.637299, 13.028181)]);
-    fishery3.bioMass=10.0;
-    fishery3.maxCapacity=400.0;
+    fishery3.bioMass=100.0;
+    fishery3.maxCapacity=1000.0;
     fishery3.name = "Agrigento";
 
 
@@ -234,8 +234,8 @@ class Simulation
                                        new Point(35.893227, 13.247907),
                                        new Point( 35.697182, 12.890852),
                                        new Point(35.995512, 12.577741)]);
-    fishery4.bioMass=10.0;
-    fishery4.maxCapacity=100.0;
+    fishery4.bioMass=100.0;
+    fishery4.maxCapacity=1000.0;
     fishery4.name = "Lampedusa";
 
     Simulation sim = new Simulation._internal(seed);
@@ -254,7 +254,12 @@ class Simulation
                          37.649350, 12.582516);
     sim.ports.add(port);
     //port (37.649350, 12.582516)
-
+    for(int i=0; i<fishermen;i++)
+    {
+      sim.fishermen.add(new Fisherman(port,sim.random.nextDouble()/200.0,
+                                      sim.random,1.0,2.0));
+    }
+    sim.costs = new GlobalCosts(1.0,0.0,{fishery1:0.0,fishery2:0.0,fishery3:0.0,fishery4:0.0});
 
 
 

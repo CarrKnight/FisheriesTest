@@ -32,7 +32,7 @@ main()
     Fisherman fisherman = new Fisherman(port,.5,random,1.0,2.0);
 
     //he should start at port
-    expect(fisherman.location==null,true);
+    expect(fisherman.location==Fisherman.AT_PORT,true);
 
     //now let the fisherman choose where to fish
     fisherman.chooseFishery(costs,random,0.0);
@@ -66,12 +66,12 @@ main()
     Fisherman fisherman = new Fisherman(port,.5,random,1.0,2.0);
 
     //he should start at port
-    expect(fisherman.location==null,true);
+    expect(fisherman.location==Fisherman.AT_PORT,true);
 
     //now let the fisherman choose where to fish
     fisherman.chooseFishery(costs,random,0.0);
     //should have stayed home
-    expect(fisherman.location==null,true);
+    expect(fisherman.location==Fisherman.AT_PORT,true);
 
     //make sure it counts correctly
     expect(fishery.fishermenHere,0);
@@ -101,7 +101,7 @@ main()
     Fisherman fisherman = new Fisherman(port,.5,random,1.0,2.0);
 
     //he should start at port
-    expect(fisherman.location==null,true);
+    expect(fisherman.location==Fisherman.AT_PORT,true);
 
     //error is so high, it will choose to fish
     fisherman.chooseFishery(costs,random,1.0);
@@ -147,7 +147,7 @@ main()
     fisherman.expectedBio[empty]=100.0;
 
     //he should start at port
-    expect(fisherman.location==null,true);
+    expect(fisherman.location==Fisherman.AT_PORT,true);
 
     //will choose empty
     fisherman.chooseFishery(costs,random,0.0);
@@ -200,7 +200,7 @@ main()
     fisherman.expectedBio[fishery2]=100.0;
 
     //he should start at port
-    expect(fisherman.location==null,true);
+    expect(fisherman.location==Fisherman.AT_PORT,true);
 
     //he will choose the closest one
     fisherman.chooseFishery(costs,random,0.0);

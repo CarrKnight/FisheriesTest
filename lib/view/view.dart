@@ -9,9 +9,11 @@ import 'package:mapspike/model/model.dart';
 import 'package:mapspike/presentation/presentation.dart';
 import 'dart:math' as MATH;
 import 'dart:html';
+import 'dart:collection';
 
 
 part 'fishery_view.dart';
+part 'fishermen_view.dart';
 part 'simulation_view.dart';
 part 'map.dart';
 

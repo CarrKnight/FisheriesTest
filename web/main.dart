@@ -20,10 +20,11 @@ void main()
 {
 
 
-  SimulationView view = new SimulationView.gasPolicy(new DateTime.now().millisecondsSinceEpoch,
+  SimulationView view = new SimulationView.gasPolicy(
+      new DateTime.now().millisecondsSinceEpoch,
   "#map_canvas");
 
-  new Timer.periodic(new Duration(milliseconds:30),(t){
+  new Timer.periodic(new Duration(milliseconds:80),(t){
 
     view.step();
 
