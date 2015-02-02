@@ -31,7 +31,8 @@ class ControlBar
 
   List<StreamSubscription> listeners = [];
 
-  ControlBar(this.container, this.presentation, String simulationId,Reset reset,[this.speed=80])
+  ControlBar(this.container, this.presentation, String simulationId,Reset reset,
+  {this.speed:80,GlobalCosts costs:null,bool tariffControl: false})
   {
     msPerStep = new Duration(milliseconds:speed);
     //this is how buttons look like in pure.css
@@ -84,6 +85,8 @@ class ControlBar
       ..max = "300"
       ..step="10";
 
+    slider.style.width = "60%";
+
     label.append(slider);
 
 
@@ -113,13 +116,27 @@ class ControlBar
     container.append(new BRElement());
     container.append(label);
     container.append(speedometer);
+    //if you are given global costs, add oil slider
+    if(costs != null)
+    {
+      container.append(new BRElement());
+      container.append(addOilSlider(costs,simulationId));
+      if(tariffControl)
+      {
+        List<DivElement> sliders = addTariffSliders(costs,simulationId);
+        for(DivElement e in sliders)
+        {
+          container.append(new BRElement());
+          container.append(e);
+        }
+      }
+    }
 
   }
 
   step()
   {
 
-    print("step!");
     if(playing)
     {
       presentation.step();
@@ -133,6 +150,106 @@ class ControlBar
     playing = false;
     for(StreamSubscription listener in listeners)
       listener.cancel();
+  }
+
+
+  DivElement addOilSlider(GlobalCosts costs, String simulationId)
+  {
+    DivElement container = new DivElement();
+    //add speed slider
+    LabelElement label = new LabelElement()
+      ..text = "Oil Price"
+      ..htmlFor = "${simulationId}_oil";
+
+    InputElement slider = new InputElement()
+      ..type = "range"
+      ..id = "${simulationId}_oil"
+      ..min= "0"
+      ..value= "${costs.oilPricePerKm}"
+      ..max = "5"
+      ..step="0.1";
+
+    slider.style.width = "60%";
+
+    label.append(slider);
+
+
+    SpanElement meter = new SpanElement();
+    meter.text=" ${costs.oilPricePerKm}\$/km";
+
+    //listen to it
+    listeners.add(
+
+        slider.onInput.listen((e){
+          double cost=double.parse(slider.value);
+          costs.oilPricePerKm = cost;
+          meter.text=" ${costs.oilPricePerKm}\$/km";
+        })
+        );
+
+    SpanElement dayCounter = new SpanElement();
+    dayCounter.text = "";
+
+    container.append(label);
+    container.append(meter);
+    return container;
+  }
+
+
+
+
+  List<DivElement> addTariffSliders(GlobalCosts costs, String simulationId)
+  {
+
+    List<DivElement> toReturn = [];
+    costs.tariffs.forEach((fishery,tariff)
+                          {
+
+
+                            DivElement container = new DivElement();
+                            //add speed slider
+                            LabelElement label = new LabelElement()
+                              ..text = "${fishery.name} tariff "
+                              ..htmlFor = "${simulationId}_${fishery.name}";
+
+                            InputElement slider = new InputElement()
+                              ..type = "range"
+                              ..id = "${simulationId}_${fishery.name}"
+                              ..min= "0"
+                              ..value= "${tariff}"
+                              ..max = "10"
+                              ..step="0.5";
+
+                            slider.style.width = "60%";
+
+                            label.append(slider);
+
+
+                            SpanElement meter = new SpanElement();
+                            meter.text=" ${tariff}\$/day";
+
+                            //listen to it
+                            listeners.add(
+
+                                slider.onInput.listen((e){
+                                  double newTariff=double.parse(slider.value);
+                                  costs.tariffs[fishery] = newTariff;
+                                  meter.text=" ${newTariff}\$/day";
+                                })
+                                );
+
+                            SpanElement dayCounter = new SpanElement();
+                            dayCounter.text = "";
+
+                            container.append(label);
+                            container.append(meter);
+                            toReturn.add(container);
+
+
+
+
+                          });
+    return toReturn;
   }
 
 

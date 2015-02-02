@@ -31,4 +31,14 @@ void main()
 
 
 
+  new SimulationView.original(
+  "#final");
+
+
+
+  new SimulationView.gasPolicy(
+  "#gaspolicy");
+
+
+
 }

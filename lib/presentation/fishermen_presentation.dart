@@ -147,3 +147,18 @@ class FishermenPresentation
 
 
 }
+
+/**
+ * this presentation is built on the fly and on demand. When the view needs an updating tooltip
+ * for a fisherman, this does the trick
+ */
+class FishermanPresentation
+{
+
+  final Fisherman fisherman;
+
+  final StreamController<FishermanEvent> streamer;
+
+  final Schedule schedule;
+
+}

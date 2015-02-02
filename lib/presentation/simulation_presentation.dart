@@ -113,6 +113,8 @@ class SimulationPresentation
   Stream<SimulationEvent> get stream => streamer.stream;
 
 
+  GlobalCosts get globalCosts => simulation.costs;
+
   /**
    * step one day
    */

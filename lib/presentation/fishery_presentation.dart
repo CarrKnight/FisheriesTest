@@ -33,7 +33,7 @@ class FisheryPresentation
   void endOfDay(){
 
     if(streamer.hasListener)
-      streamer.add(new FisheryEvent(fishery.maxCapacity,fishery.bioMass));
+      streamer.add(new FisheryEvent(fishery.maxCapacity,fishery.bioMass,fishery.fishermenHere));
   }
 
 
@@ -49,6 +49,7 @@ class FisheryPresentation
   double get bioMassRatio => fishery.bioMassRatio;
   double get bioMass => fishery.bioMass;
   double get maxCapacity => fishery.maxCapacity;
+  int get fishermenHere => fishery.fishermenHere;
   String get name => fishery.name;
 
 
@@ -65,8 +66,10 @@ class FisheryEvent
 
   final double bioMass;
 
+  final int fishermenHere;
 
-  FisheryEvent(this.maxCapacity, this.bioMass);
+
+  FisheryEvent(this.maxCapacity, this.bioMass, this.fishermenHere);
 
 
   double get bioMassRatio => bioMass/maxCapacity;

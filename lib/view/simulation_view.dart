@@ -30,6 +30,10 @@ class SimulationView
 
   final LatLng mapCenter;
 
+  bool gasSlider = false;
+
+  bool tariffSlider = false;
+
   /**
 
    */
@@ -43,13 +47,14 @@ class SimulationView
       "white",
   ];
 
+
   SimulationView.overfished(String selector):
   this._internal(()=>new SimulationPresentation.overfished(new DateTime.now().millisecondsSinceEpoch),selector,
                  new LatLng(34.0, 139.0));
 
   SimulationView.gasPolicy(String selector):
   this._internal(()=>new SimulationPresentation.gasPolicy(new DateTime.now().millisecondsSinceEpoch),selector,
-                 new LatLng(42.433653, -87.044186));
+                 new LatLng(43.033653, -87.044186),true);
 
 
 
@@ -63,7 +68,7 @@ class SimulationView
 
   SimulationView.original(String selector):
   this._internal(()=>new SimulationPresentation.original(new DateTime.now().millisecondsSinceEpoch),selector,
-                 new LatLng(36.649350, 12.582516));
+                 new LatLng(36.649350, 12.582516),true,true);
 
   /**
    * creates the map, the views for agents and place them on the map
@@ -72,15 +77,15 @@ class SimulationView
     //create a div element for the control bar
     DivElement controlContainer = new DivElement();
     container.append(controlContainer);
-    control = new ControlBar(controlContainer, presentation, simulationName,reset);
+    control = new ControlBar(controlContainer, presentation, simulationName,reset,
+                             costs: gasSlider ? presentation.globalCosts : null,
+                             tariffControl:tariffSlider);
 
 
     DivElement mapContainer = new DivElement();
     MapOptions mapOptions = new MapOptions()
       ..zoom = 7
-      ..scaleControl = false
-      ..zoomControl = false
-      ..streetViewControl = false
+      ..disableDefaultUI = true
       ..mapTypeId = MapTypeId.HYBRID
     ;
     map = new MouseTrackingMap(mapContainer, mapOptions);
@@ -98,7 +103,6 @@ class SimulationView
     {
       FisheryView view = new FisheryView(fishery, defaultColors[i]);
       fisheries.add(view);
-      print(defaultColors[i]);
       i++;
       //add the view to the map as well
       view.addToMap(map);
@@ -108,7 +112,8 @@ class SimulationView
       fishermen = new FishermenView(presentation.fishermen, map);
   }
 
-  SimulationView._internal(this.factory, String selector, this.mapCenter)
+  SimulationView._internal(this.factory, String selector, this.mapCenter,
+                           [this.gasSlider=false, this.tariffSlider = false])
   :
   simulationName = selector.substring(1)
   {

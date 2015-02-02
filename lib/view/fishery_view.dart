@@ -23,6 +23,8 @@ class FisheryView
 
   double maxCapacity = double.NAN;
 
+  int fishermenHere = 0;
+
   String name = " ";
 
   FisheryTooltip tip;
@@ -59,6 +61,8 @@ class FisheryView
     //grab initial data from fishery
     maxCapacity = presentation.maxCapacity;
     lastBioMass = presentation.bioMass;
+    fishermenHere = presentation.fishermenHere;
+
     name = presentation.name;
 
 
@@ -76,6 +80,7 @@ class FisheryView
   {
     //update storage
     lastBioMass = e.bioMass;
+    fishermenHere = e.fishermenHere;
     //fill opacity
     polygon.set("fillOpacity",e.bioMassRatio * MAX_OPACITY);
 
@@ -206,18 +211,19 @@ class FisheryTooltip
     {
       //create the message
       tooltipElem.children.clear();
-      tooltipElem.append(new SpanElement()..text="${fisheryView.name}" ..style.fontSize="larger");
+      tooltipElem.append(new SpanElement()..text="${fisheryView.name}"
+                           ..style.fontSize="larger");
       UListElement list = new UListElement();
       double roundedBioMass = (fisheryView.lastBioMass * 100).round()/100.0;
 
       list.append(new LIElement()..text="Bio-Mass: ${roundedBioMass}");
       list.append(new LIElement()..text="Max capacity: ${fisheryView.maxCapacity}");
+      list.append(new LIElement()..text="Fishermen here: ${fisheryView.fishermenHere}");
       //put it in the span
       tooltipElem.append(list);
 
 
     }
-    //todo add span around numbers so they can be colored
 
   }
 
