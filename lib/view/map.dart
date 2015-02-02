@@ -17,12 +17,14 @@ class MouseTrackingMap extends GMap
 
   int mouseY;
 
+  StreamSubscription subscription;
 
   MouseTrackingMap(Element container, MapOptions options)
   :
   super(container,options)
   {
 
+    subscription =
     container.onMouseMove.listen((event){
 
       mouseX = event.page.x;
@@ -30,5 +32,11 @@ class MouseTrackingMap extends GMap
 
     });
 
+  }
+
+
+  void kill()
+  {
+    subscription.cancel();
   }
 }

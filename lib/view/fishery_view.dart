@@ -27,6 +27,8 @@ class FisheryView
 
   FisheryTooltip tip;
 
+  StreamSubscription subscription;
+
   factory FisheryView(FisheryPresentation presentation, String color)
   {
 
@@ -62,6 +64,7 @@ class FisheryView
 
 
     //start listening
+    subscription=
     presentation.stream.listen((e)=>reactToStream(e));
   }
 
@@ -102,6 +105,13 @@ class FisheryView
     return coordinates;
   }
 
+  kill()
+  {
+    if(tip != null)
+      tip.kill();
+    subscription.cancel();
+  }
+
 
 }
 
@@ -126,11 +136,15 @@ class FisheryTooltip
    */
   DivElement tooltipElem;
 
+  StreamSubscription mouseOver;
+  StreamSubscription mouseOut;
 
 
   FisheryTooltip(this.map, this.fisheryView) {
     //start listening
+    mouseOver =
     fisheryView.polygon.onMouseover.listen(_createTemplate);
+    mouseOut =
     fisheryView.polygon.onMouseout.listen((e)=>_destroyTemplate());
 
   }
@@ -145,17 +159,17 @@ class FisheryTooltip
     updateMessage();
     //style
     tooltipElem
-    ..style.display="block"
-    ..style.whiteSpace="pre"
-    ..style.color = "white"
-    ..style.fontSize = "smaller"
-    ..style.paddingBottom = "5px";
+      ..style.display="block"
+      ..style.whiteSpace="pre"
+      ..style.color = "white"
+      ..style.fontSize = "smaller"
+      ..style.paddingBottom = "5px";
     //todo turn this into css
 
     tooltipElem.style
- //   ..padding = "5px"
-    ..backgroundColor = "black"
-    ..borderRadius = "5px";
+    //   ..padding = "5px"
+      ..backgroundColor = "black"
+      ..borderRadius = "5px";
     //todo turn this into css
 
     //get pixel position
@@ -205,6 +219,14 @@ class FisheryTooltip
     }
     //todo add span around numbers so they can be colored
 
+  }
+
+  kill()
+  {
+    if(tooltipElem != null)
+      _destroyTemplate();
+    mouseOver.cancel();
+    mouseOut.cancel();
   }
 
 

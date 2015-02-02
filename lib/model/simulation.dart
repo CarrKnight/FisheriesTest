@@ -45,7 +45,7 @@ class Simulation
                                        new Point(19.0, -158.0)]);
     hawaii.bioMass=100.0;
     hawaii.maxCapacity=1000.0;
-    hawaii.name = "Hawaii";
+    hawaii.name = "Fishery";
 
     Simulation sim = new Simulation._internal(seed);
     sim.fisheries.add(hawaii);

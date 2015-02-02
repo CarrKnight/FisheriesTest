@@ -4,6 +4,7 @@
 
 part of view;
 
+typedef SimulationPresentation PresentationFactory();
 
 /**
  *  The root of the view
@@ -11,9 +12,23 @@ part of view;
 class SimulationView
 {
 
-  final SimulationPresentation presentation;
+  final PresentationFactory factory;
+
+  SimulationPresentation presentation;
 
   MouseTrackingMap map;
+
+  DivElement container;
+
+  List<FisheryView> fisheries = [];
+
+  FishermenView fishermen;
+
+  ControlBar control;
+
+  final String simulationName;
+
+  final LatLng mapCenter;
 
   /**
 
@@ -28,55 +43,118 @@ class SimulationView
       "white",
   ];
 
-  SimulationView.overfished(int seed,String selector):
-  this._internal(new SimulationPresentation.overfished(seed),selector,
-                 new LatLng(35.0, 139.0));
+  SimulationView.overfished(String selector):
+  this._internal(()=>new SimulationPresentation.overfished(new DateTime.now().millisecondsSinceEpoch),selector,
+                 new LatLng(34.0, 139.0));
 
-  SimulationView.gasPolicy(int seed,String selector):
-  this._internal(new SimulationPresentation.gasPolicy(seed),selector,
+  SimulationView.gasPolicy(String selector):
+  this._internal(()=>new SimulationPresentation.gasPolicy(new DateTime.now().millisecondsSinceEpoch),selector,
                  new LatLng(42.433653, -87.044186));
 
 
 
-  SimulationView.oneLonelyFishery(int seed,String selector):
-  this._internal(new SimulationPresentation.oneLonelyFishery(seed),selector,
-                 new LatLng(19.5, -157.5));
+  SimulationView.oneLonelyFishery(String selector):
+  this._internal(()=>new SimulationPresentation.oneLonelyFishery(new DateTime.now().millisecondsSinceEpoch),selector,
+                 new LatLng(20.0, -157.5));
 
-  SimulationView.chooseRichest(int seed,String selector):
-  this._internal(new SimulationPresentation.chooseRichest(seed),selector,
-                 new LatLng(-11.781268, -77.289216));
+  SimulationView.chooseRichest(String selector):
+  this._internal(()=>new SimulationPresentation.chooseRichest(new DateTime.now().millisecondsSinceEpoch),selector,
+                 new LatLng(-12, -78));
 
-  SimulationView.original(int seed,String selector):
-  this._internal(new SimulationPresentation.original(seed),selector,
+  SimulationView.original(String selector):
+  this._internal(()=>new SimulationPresentation.original(new DateTime.now().millisecondsSinceEpoch),selector,
                  new LatLng(36.649350, 12.582516));
 
   /**
    * creates the map, the views for agents and place them on the map
    */
-  SimulationView._internal(this.presentation, String selector, LatLng mapCenter)
-  {
-    visualRefresh = true;
-    final mapOptions = new MapOptions()
-      ..zoom = 8
-      ..center = mapCenter
+  buildView() {
+    //create a div element for the control bar
+    DivElement controlContainer = new DivElement();
+    container.append(controlContainer);
+    control = new ControlBar(controlContainer, presentation, simulationName,reset);
+
+
+    DivElement mapContainer = new DivElement();
+    MapOptions mapOptions = new MapOptions()
+      ..zoom = 7
+      ..scaleControl = false
+      ..zoomControl = false
+      ..streetViewControl = false
       ..mapTypeId = MapTypeId.HYBRID
     ;
-    final map = new MouseTrackingMap(querySelector(selector), mapOptions);
-
+    map = new MouseTrackingMap(mapContainer, mapOptions);
+    container.append(new BRElement());
+    container.append(mapContainer);
+    mapContainer.style.height = "360px";
+    mapContainer.style.width = "640px";
+    mapContainer.dispatchEvent(new Event("resize"));
+    //so the dispatch event is necessary to avoid ugly grey areas when resetting
+    map.center = mapCenter;
 
     //fishery views
-    int i=0;
-    for(FisheryPresentation fishery in presentation.fisheries.values)
+    int i = 0;
+    for (FisheryPresentation fishery in presentation.fisheries.values)
     {
-      FisheryView view = new FisheryView(fishery,defaultColors[i]);
+      FisheryView view = new FisheryView(fishery, defaultColors[i]);
+      fisheries.add(view);
       print(defaultColors[i]);
       i++;
       //add the view to the map as well
       view.addToMap(map);
     }
     //fishermen markers
-    if(presentation.fishermen != null)
-      new FishermenView(presentation.fishermen,map);
+    if (presentation.fishermen != null)
+      fishermen = new FishermenView(presentation.fishermen, map);
+  }
+
+  SimulationView._internal(this.factory, String selector, this.mapCenter)
+  :
+  simulationName = selector.substring(1)
+  {
+    visualRefresh = true;
+    presentation = factory();
+
+
+    //main container is the only thing that survives a reset!
+    container = querySelector(selector);
+    container.style.width = "700px";
+    container.style.marginLeft = "auto";
+    container.style.marginRight = "auto";
+
+
+
+
+    buildView();
+
+
+  }
+
+  /**
+   * kill views, create new presentation
+   */
+  void reset()
+  {
+    for(FisheryView f in fisheries)
+      f.kill();
+    fisheries.clear();
+    if(fishermen != null)
+      fishermen.kill();
+    fishermen = null;
+
+    control.kill();
+    control = null;
+
+    map.kill();
+    map = null;
+
+    //kill the visuals
+    for(Element e in container.children)
+      e.remove();
+
+    //now rebuild
+    presentation = factory();
+    buildView();
 
 
   }

@@ -21,6 +21,8 @@ class FishermenView
 
   final MouseTrackingMap map;
 
+  StreamSubscription subscription;
+
   FishermenView(this.presentation, this.map) {
 
     print("view built!");
@@ -30,13 +32,14 @@ class FishermenView
     presentation.locations.forEach((f,l)
                                    {
                                      MarkerOptions options = new MarkerOptions()
-                                     ..map=map
-                                     ..draggable=false
-                                     ..position=new LatLng(l.x,l.y);
+                                       ..map=map
+                                       ..draggable=false
+                                       ..position=new LatLng(l.x,l.y);
                                      fishermen[f]=new Marker(options);
                                    });
     //listen to changes
-    presentation.movementStream.listen((e)=>updatePositions(e.movements));
+    subscription= presentation.movementStream.listen(
+            (e)=>updatePositions(e.movements));
 
 
 
@@ -54,6 +57,12 @@ class FishermenView
                       });
 
 
+  }
+
+
+  kill()
+  {
+    subscription.cancel();
   }
 
 }

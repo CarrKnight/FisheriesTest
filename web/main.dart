@@ -20,15 +20,15 @@ void main()
 {
 
 
-  SimulationView view = new SimulationView.gasPolicy(
-      new DateTime.now().millisecondsSinceEpoch,
-  "#map_canvas");
+  new SimulationView.oneLonelyFishery(
+  "#lonely");
 
-  new Timer.periodic(new Duration(milliseconds:80),(t){
+  new SimulationView.overfished(
+  "#overfishing");
 
-    view.step();
+  new SimulationView.chooseRichest(
+  "#richest");
 
-  });
 
 
 }

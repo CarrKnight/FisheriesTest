@@ -18,7 +18,7 @@ class SimulationPresentation
 
   final Map<Fishery,FisheryPresentation> fisheries = new Map();
 
-  final StreamController<SimulationEvent> streamer = new StreamController();
+  final StreamController<SimulationEvent> streamer = new StreamController.broadcast();
 
   FishermenPresentation fishermen;
 
