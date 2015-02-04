@@ -11,3 +11,5 @@ dependencies:
   google_maps: any
 dev_dependencies:
   unittest: any
+  darwin: ">=0.2.4 <0.3.0"
+

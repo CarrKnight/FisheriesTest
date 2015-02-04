@@ -9,4 +9,12 @@
 
 library policy;
 
+import 'package:mapspike/model/model.dart';
+import 'package:darwin/darwin.dart';
+import 'dart:math';
+import 'dart:async';
+
+part 'strategies.dart';
+part 'pid.dart';
+
 

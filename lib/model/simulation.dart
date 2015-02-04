@@ -28,6 +28,7 @@ class Simulation
 
   final Random random;
 
+
   static const ANNEALING_PROBABILITY = .01;
 
 
@@ -300,6 +301,29 @@ class Simulation
     schedule.scheduleRepeating(Phase.GOSSIPING,(s)=>propagateInformation());
 
 
+
+  }
+
+  /**
+   * simple counter for daily catch
+   */
+  double totalDailyCatch()
+  {
+    double total = 0.0;
+    for(Fishery f in fisheries)
+      total += f.bioMassFished;
+    return total;
+  }
+
+  /**
+   * simple counter for total biome
+   */
+  double biomeLeft()
+  {
+    double total = 0.0;
+    for(Fishery f in fisheries)
+      total += f.bioMass;
+    return total;
   }
 
 
